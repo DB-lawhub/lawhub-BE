@@ -11,4 +11,5 @@ app_name = 'employee'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('employee/<int:pk>/', EmployeeViewSet.as_view({'get': 'retrieve'})),
 ]
