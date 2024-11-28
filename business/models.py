@@ -13,7 +13,7 @@ class Business(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='business')
     business_registration = models.CharField(max_length=10, choices=BUSINESS_REGISTRATION_CHOICES, default='개인')
     number_of_employees = models.PositiveIntegerField(default=0, blank=True)
-    business_type = models.CharField(max_length=50)
+    business_type = models.IntegerField()
 
 # 사업 수익
 class Revenue(models.Model):
