@@ -69,7 +69,50 @@ class EmployeeTax(models.Model):
 
         if self.employee_id.tax_type == '4대보험':
             self.employment = salary * Decimal(0.0115)
-            self.industrial_accident = salary * Decimal(0.0105)  # !!! 업종별 상이한 산재보험료율
+            # 업종별 산재보험료율
+            if self.employee_id.business_id.business_type == 1:
+                rate = Decimal(0.185)
+            elif self.employee_id.business_id.business_type == 2:
+                rate = Decimal(0.057)
+            elif self.employee_id.business_id.business_type == 3:
+                rate = Decimal(0.016)
+            elif self.employee_id.business_id.business_type == 4:
+                rate = Decimal(0.011)
+            elif self.employee_id.business_id.business_type in [5, 21]:
+                rate = Decimal(0.020)
+            elif self.employee_id.business_id.business_type == 6:
+                rate = Decimal(0.009)
+            elif self.employee_id.business_id.business_type in [7, 9]:
+                rate = Decimal(0.013)
+            elif self.employee_id.business_id.business_type in [8, 14, 26]:
+                rate = Decimal(0.007)
+            elif self.employee_id.business_id.business_type == 10:
+                rate = Decimal(0.010)
+            elif self.employee_id.business_id.business_type in [11, 24]:
+                rate = Decimal(0.006)
+            elif self.employee_id.business_id.business_type == 12:
+                rate = Decimal(0.024)
+            elif self.employee_id.business_id.business_type == 13:
+                rate = Decimal(0.012)
+            elif self.employee_id.business_id.business_type == 15:
+                rate = Decimal(0.035)
+            elif self.employee_id.business_id.business_type == 16:
+                rate = Decimal(0.008)
+            elif self.employee_id.business_id.business_type == 17:
+                rate = Decimal(0.018)
+            elif self.employee_id.business_id.business_type in [18, 27]:
+                rate = Decimal(0.009)
+            elif self.employee_id.business_id.business_type == 19:
+                rate = Decimal(0.058)
+            elif self.employee_id.business_id.business_type == 20:
+                rate = Decimal(0.027)
+            elif self.employee_id.business_id.business_type in [22, 23, 25]:
+                rate = Decimal(0.008)
+            elif self.employee_id.business_id.business_type == 28:
+                rate = Decimal(0.014)
+            else:
+                rate = Decimal(0)
+            self.industrial_accident = salary * rate
             self.health = salary * Decimal(0.03545)
             self.pension = salary * Decimal(0.045)
             self.care = self.health * 2 * Decimal(0.06475)
