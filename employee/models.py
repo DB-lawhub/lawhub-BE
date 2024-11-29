@@ -16,6 +16,7 @@ class Employee(models.Model):
     salary = models.DecimalField(max_digits=15, decimal_places=2, default=0, blank=True)     # 월급
     hourly = models.DecimalField(max_digits=15, decimal_places=2, default=0, blank=True)     # 시급
     working_hours = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
+    overtime_hours = models.DecimalField(max_digits=10, decimal_places=2, default=0, blank=True)
     tax_type = models.CharField(max_length=10, choices=TAX_TYPE_CHOICES)
     join_date = models.DateField()      # 입사 날짜
     severance_pay = models.DecimalField(max_digits=15, decimal_places=2, default=0, blank=True)
@@ -35,11 +36,13 @@ class EmployeeSalary(models.Model):
         if employee.salary > 0:
             self.pay = employee.salary
         else:
+            if employee.overtime_hours > 0:
+                self.pay = employee.hourly * employee.working_hours * 4 + employee.overtime_hours * employee.hourly * 1.5
             self.pay = employee.hourly * employee.working_hours * 4
 
         super().save(*args, **kwargs)
 
-        # 주휴수당, 추가수당 추가하기
+        # 주휴수당 추가하기
 
         # EmployeeTax 테이블 자동 생성
         tax_type = employee.tax_type
